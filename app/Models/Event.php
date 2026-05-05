@@ -23,6 +23,8 @@ class Event extends Model
     }
     use SoftDeletes;
 
+    const string RELATION_TRAINERS = 'trainer';
+
 
     protected $fillable = [
         'title',

@@ -9,7 +9,8 @@ class EventController extends Controller
 {
     public function index(): View
     {
-        $events = Event::all();
+        $events = Event::query()->with(Event::RELATION_TRAINERS)->get();
+
 
 
 
