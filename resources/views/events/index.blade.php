@@ -39,7 +39,7 @@
                     </div>
                     <div class="flex items-center gap-1">
                         <div class="flex items-center gap-1">
-                            <span></span>{{$event->trainer?->name}}
+                            <span>🧔</span>{{$event->trainer?->name}}
                         </div>
                         <span>⏱</span>
                         <!-- Using our Trait Method -->
