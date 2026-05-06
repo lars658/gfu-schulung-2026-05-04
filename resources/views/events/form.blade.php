@@ -36,7 +36,7 @@
                     <select name="trainer_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
                         <option value="" class="hidden">-- Trainer auswählen --</option>
                         @foreach($trainers as $trainer)
-                            <option value="{{ $trainer->getKey() }}" {{ old('trainer_id', isset($event) && $event->trainer?->getKey()) == $trainer->getKey() ? 'selected' : '' }}>
+                            <option value="{{ $trainer->getKey() }}" {{ old('trainer_id', isset($event) ? $event->trainer?->getKey() : null) == $trainer->getKey() ? 'selected' : '' }}>
                                 {{ $trainer->name }}
                             </option>
                         @endforeach
@@ -93,8 +93,34 @@
                     </div>
                 </div>
 
+                <div class="py-2">
+                    <label class="block text-sm font-medium mb-2">Tags auswählen</label>
+                    <div class="grid grid-cols-4 gap-2">
+                        @foreach($tags as $tag)
+                            <label class="flex items-center space-x-2 cursor-pointer group">
+                                <input type="checkbox"
+                                       value="{{ $tag->id }}"
+                                       class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                       name="tags[]"
+                                    {{ in_array($tag->id, old('tags', isset($event) ? $event->tags->pluck('id')->toArray() : [])) ? 'checked' : '' }}
+                                >
+                                <span class="text-sm text-gray-600 group-hover:text-gray-900 transition">
+                                    {{ $tag->name }}
+                                </span>
+                            </label>
+                        @endforeach
+                    </div>
+                    @error('tags.*')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <!-- Submit Button -->
-                <div class="flex justify-end pt-4">
+                <div class="flex items-center w-full pt-4">
+                    @if(isset($event))
+                        <a href="{{ route('events.remove', ['event' => $event]) }}" class="gap-x-2 text-sm mr-auto inline-flex items-center rounded-lg bg-white text-gray-700 hover:text-gray-900 transition-all px-6 py-2 shadow-sm ring-1 ring-inset ring-gray-300 hover:ring-gray-500 hover:bg-gray-50">Event löschen</a>
+                    @endif
+                    <a href="{{ url()->previous() }}" class="gap-x-2 text-sm inline-flex items-center rounded-lg bg-white text-gray-700 hover:text-gray-900 transition-all px-6 py-2 shadow-sm ring-1 ring-inset ring-gray-300 hover:ring-gray-500 hover:bg-gray-50 ml-auto mr-4">zurück</a>
                     <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition shadow-md">
                         {{ isset($event) ? 'aktualisieren' : 'speichern' }}
                     </button>
